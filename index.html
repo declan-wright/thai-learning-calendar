@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thai Language Learning Schedule</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* Make sure the page has enough padding at the bottom for the fixed download bar */
+        body::after {
+            content: "";
+            display: block;
+            height: 100px;
+        }
+        h1 {
+            color: #006064;
+            text-align: center;
+            border-bottom: 2px solid #00838f;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #00838f;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #0097a7;
+            margin-top: 20px;
+        }
+        .week {
+            background-color: #e0f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .special-event {
+            background-color: #ffecb3;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .day {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-left: 4px solid #00acc1;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .day:hover {
+            background-color: #e0f7fa;
+            transform: translateX(2px);
+        }
+        .day-completed {
+            background-color: #dcedc8;
+            border-left: 4px solid #558b2f;
+        }
+        .day-completed::after {
+            content: "✓";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #558b2f;
+            font-weight: bold;
+        }
+        .weekend {
+            border-left: 4px solid #ffa000;
+        }
+        .work-day {
+            border-left: 4px solid #f44336;
+        }
+        .review {
+            font-style: italic;
+            color: #00796b;
+        }
+        .new-content {
+            font-weight: bold;
+            color: #006064;
+        }
+        .speaking {
+            color: #6a1b9a;
+        }
+        .listening {
+            color: #2e7d32;
+        }
+        .milestone {
+            background-color: #dcedc8;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #558b2f;
+        }
+        .download-section {
+            text-align: center;
+            margin: 40px 0 80px 0;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #00897b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #00695c;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .reset-btn {
+            background-color: #e57373;
+        }
+        .reset-btn:hover {
+            background-color: #c62828;
+        }
+        .progress-container {
+            margin: 20px 0;
+            background-color: #e0f2f1;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .progress-bar {
+            background-color: #f5f5f5;
+            height: 30px;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .progress {
+            background-color: #26a69a;
+            height: 100%;
+            width: 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 1s;
+            background-image: linear-gradient(45deg, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent);
+            background-size: 1rem 1rem;
+            animation: progress-bar-stripes 1s linear infinite;
+        }
+        @keyframes progress-bar-stripes {
+            from { background-position: 1rem 0; }
+            to { background-position: 0 0; }
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            padding: 5px;
+            background-color: #b2dfdb;
+            margin: 0 5px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thai Language Learning Schedule (March-August 2025)</h1>
+    
+    <div class="progress-container">
+        <h3>Your Overall Progress</h3>
+        <div class="progress-bar">
+            <div class="progress" id="progressBar">0%</div>
+        </div>
+        <div class="stats">
+            <div class="stat-item">
+                <div id="daysCompleted">0</div>
+                <div>Days Completed</div>
+            </div>
+            <div class="stat-item">
+                <div id="totalDays">164</div>
+                <div>Total Days</div>
+            </div>
+            <div class="stat-item">
+                <div id="wordsLearned">0</div>
+                <div>Words Learned</div>
+            </div>
+        </div>
+        <p>Total vocabulary: 6 folders × 10 sets × 50 words = 3,000 words</p>
+        <p>Weekly goal: 150 words (3 sets)</p>
+    </div>
+
+    <div class="download-section">
+        <h2>Download Calendar Files</h2>
+        <p>Click a button below to download your Thai study schedule in your preferred format.</p>
+        <div>
+            <button id="downloadIcsBtn">Download ICS Calendar File</button>
+            <button id="downloadCsvBtn">Download CSV Schedule</button>
+        </div>
+        <div style="margin-top: 15px;">
+            <button id="resetProgressBtn" class="reset-btn">Reset Progress</button>
+        </div>
+    </div>
+    
+    <h2>March 2025</h2>
+    
+    <div class="week">
+        <h3>Week 1 (March 1-7)</h3>
+        <div class="day weekend">
+            <strong>Saturday, March 1</strong>: <span class="new-content">Learn Set 1.0 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, March 2</strong>: <span class="review">Review Set 1.0</span> + <span class="new-content">Learn Set 1.1 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, March 3</strong>: <span class="review">Quick review Sets 1.0-1.1 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, March 4</strong>: <span class="new-content">Learn Set 1.2 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, March 5</strong>: <span class="review">Quick review Sets 1.0-1.2 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, March 6</strong>: <span class="listening">Listen to beginner Thai podcast (15 min)</span> + <span class="review">Comprehensive review Sets 1.0-1.2</span>
+        </div>
+        <div class="day">
+            <strong>Friday, March 7</strong>: <span class="speaking">Practice saying Sets 1.0-1.2 aloud (20 min)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 2 (March 8-14)</h3>
+        <div class="day weekend">
+            <strong>Saturday, March 8</strong>: <span class="new-content">Learn Set 1.3 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, March 9</strong>: <span class="new-content">Learn Set 1.4 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, March 10</strong>: <span class="review">Quick review Sets 1.3-1.4 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, March 11</strong>: <span class="new-content">Learn Set 1.5 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, March 12</strong>: <span class="review">Quick review Sets 1.0-1.5 (25 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, March 13</strong>: <span class="listening">Listen to beginner Thai podcast (20 min)</span> + <span class="review">Comprehensive review Sets 1.3-1.5</span>
+        </div>
+        <div class="day special-event">
+            <strong>Friday, March 14</strong>: <span class="new-content">AIRPORT LAYOVER (5 hours) - Learn Sets 1.6 & 1.7 (100 words)</span> + <span class="review">Review Sets 1.0-1.5</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 3 (March 15-21)</h3>
+        <div class="day weekend">
+            <strong>Saturday, March 15</strong>: <span class="review">Review Sets 1.6-1.7</span> + <span class="new-content">Learn Set 1.8 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, March 16</strong>: <span class="review">Review Sets 1.0-1.8</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, March 17</strong>: <span class="review">Quick review Sets 1.6-1.8 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, March 18</strong>: <span class="new-content">Learn Set 1.9 (50 words)</span> - <span class="milestone">Folder 1 Complete!</span>
+        </div>
+        <div class="day special-event">
+            <strong>Wednesday, March 19</strong>: <span class="new-content">AIRPORT LAYOVER (16 hours) - Learn Sets 2.0, 2.1, 2.2 (150 words)</span> + <span class="review">Comprehensive review of Folder 1</span> + <span class="speaking">Record yourself saying basic Thai phrases</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, March 20</strong>: <span class="review">Review Sets 2.0-2.2</span>
+        </div>
+        <div class="day">
+            <strong>Friday, March 21</strong>: <span class="listening">Listen to beginner Thai podcast (25 min)</span> + <span class="speaking">Practice conversation with Sets 1.0-2.2</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 4 (March 22-28)</h3>
+        <div class="day weekend">
+            <strong>Saturday, March 22</strong>: <span class="new-content">Learn Set 2.3 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, March 23</strong>: <span class="new-content">Learn Set 2.4 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, March 24</strong>: <span class="review">Quick review Sets 2.3-2.4 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, March 25</strong>: <span class="new-content">Learn Set 2.5 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, March 26</strong>: <span class="review">Quick review Sets 2.0-2.5 (25 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, March 27</strong>: <span class="listening">Listen to beginner Thai podcast (30 min)</span> + <span class="review">Comprehensive review Sets 2.3-2.5</span>
+        </div>
+        <div class="day">
+            <strong>Friday, March 28</strong>: <span class="review">First review of Folder 1 (sets 1.0-1.9)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 5 (March 29-April 4)</h3>
+        <div class="day weekend">
+            <strong>Saturday, March 29</strong>: <span class="new-content">Learn Set 2.6 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, March 30</strong>: <span class="new-content">Learn Set 2.7 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, March 31</strong>: <span class="review">Quick review Sets 2.6-2.7 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, April 1</strong>: <span class="new-content">Learn Set 2.8 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, April 2</strong>: <span class="review">Quick review Sets 2.6-2.8 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, April 3</strong>: <span class="listening">Listen to intermediate Thai podcast (20 min)</span> + <span class="review">Comprehensive review Sets 2.6-2.8</span>
+        </div>
+        <div class="day">
+            <strong>Friday, April 4</strong>: <span class="new-content">Learn Set 2.9 (50 words)</span> - <span class="milestone">Folder 2 Complete!</span>
+        </div>
+    </div>
+
+    <h2>April 2025</h2>
+    
+    <div class="week">
+        <h3>Week 6 (April 5-11)</h3>
+        <div class="day weekend">
+            <strong>Saturday, April 5</strong>: <span class="new-content">Learn Set 3.0 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, April 6</strong>: <span class="new-content">Learn Set 3.1 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, April 7</strong>: <span class="review">Quick review Sets 3.0-3.1 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, April 8</strong>: <span class="new-content">Learn Set 3.2 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, April 9</strong>: <span class="review">Quick review Sets 3.0-3.2 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, April 10</strong>: <span class="listening">Listen to intermediate Thai podcast (25 min)</span> + <span class="review">Comprehensive review Sets 3.0-3.2</span>
+        </div>
+        <div class="day">
+            <strong>Friday, April 11</strong>: <span class="review">Second review of Folder 1 (sets 1.0-1.9)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 7 (April 12-18)</h3>
+        <div class="day weekend">
+            <strong>Saturday, April 12</strong>: <span class="new-content">Learn Set 3.3 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, April 13</strong>: <span class="new-content">Learn Set 3.4 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, April 14</strong>: <span class="review">Quick review Sets 3.3-3.4 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, April 15</strong>: <span class="new-content">Learn Set 3.5 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, April 16</strong>: <span class="review">Quick review Sets 3.0-3.5 (25 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, April 17</strong>: <span class="listening">Listen to intermediate Thai podcast (30 min)</span> + <span class="review">Comprehensive review Sets 3.3-3.5</span>
+        </div>
+        <div class="day">
+            <strong>Friday, April 18</strong>: <span class="review">First review of Folder 2 (sets 2.0-2.9)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 8 (April 19-25)</h3>
+        <div class="day weekend">
+            <strong>Saturday, April 19</strong>: <span class="new-content">Learn Set 3.6 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, April 20</strong>: <span class="new-content">Learn Set 3.7 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, April 21</strong>: <span class="review">Quick review Sets 3.6-3.7 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, April 22</strong>: <span class="new-content">Learn Set 3.8 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, April 23</strong>: <span class="review">Quick review Sets 3.6-3.8 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, April 24</strong>: <span class="speaking">Thai conversation practice - sets 1.0-3.8 (30 min)</span> + <span class="review">Comprehensive review Sets 3.6-3.8</span>
+        </div>
+        <div class="day">
+            <strong>Friday, April 25</strong>: <span class="new-content">Learn Set 3.9 (50 words)</span> - <span class="milestone">Folder 3 Complete!</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 9 (April 26-May 2)</h3>
+        <div class="day weekend">
+            <strong>Saturday, April 26</strong>: <span class="new-content">Learn Set 4.0 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, April 27</strong>: <span class="new-content">Learn Set 4.1 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, April 28</strong>: <span class="review">Quick review Sets 4.0-4.1 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, April 29</strong>: <span class="new-content">Learn Set 4.2 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, April 30</strong>: <span class="review">Quick review Sets 4.0-4.2 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, May 1</strong>: <span class="listening">Listen to intermediate Thai podcast (30 min)</span> + <span class="review">Comprehensive review Sets 4.0-4.2</span>
+        </div>
+        <div class="day">
+            <strong>Friday, May 2</strong>: <span class="review">Third review of Folder 1 (sets 1.0-1.9)</span> - <span class="milestone">Folder 1 Complete (3 reviews)!</span>
+        </div>
+    </div>
+
+    <h2>May 2025</h2>
+    
+    <div class="week">
+        <h3>Week 10 (May 3-9)</h3>
+        <div class="day weekend">
+            <strong>Saturday, May 3</strong>: <span class="new-content">Learn Set 4.3 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, May 4</strong>: <span class="new-content">Learn Set 4.4 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, May 5</strong>: <span class="review">Quick review Sets 4.3-4.4 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, May 6</strong>: <span class="new-content">Learn Set 4.5 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, May 7</strong>: <span class="review">Quick review Sets 4.3-4.5 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, May 8</strong>: <span class="speaking">Thai conversation practice - sets 1.0-4.5 (40 min)</span> + <span class="review">Comprehensive review Sets 4.3-4.5</span>
+        </div>
+        <div class="day">
+            <strong>Friday, May 9</strong>: <span class="review">First review of Folder 3 (sets 3.0-3.9)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 11 (May 10-16)</h3>
+        <div class="day weekend">
+            <strong>Saturday, May 10</strong>: <span class="new-content">Learn Set 4.6 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, May 11</strong>: <span class="new-content">Learn Set 4.7 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, May 12</strong>: <span class="review">Quick review Sets 4.6-4.7 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, May 13</strong>: <span class="new-content">Learn Set 4.8 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, May 14</strong>: <span class="review">Quick review Sets 4.6-4.8 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, May 15</strong>: <span class="listening">Listen to intermediate Thai podcast (30 min)</span> + <span class="review">Comprehensive review Sets 4.6-4.8</span>
+        </div>
+        <div class="day">
+            <strong>Friday, May 16</strong>: <span class="review">Second review of Folder 2 (sets 2.0-2.9)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 12 (May 17-23)</h3>
+        <div class="day weekend">
+            <strong>Saturday, May 17</strong>: <span class="new-content">Learn Set 4.9 (50 words)</span> - <span class="milestone">Folder 4 Complete!</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, May 18</strong>: <span class="new-content">Learn Set 5.0 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, May 19</strong>: <span class="review">Quick review Sets 4.9-5.0 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, May 20</strong>: <span class="new-content">Learn Set 5.1 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, May 21</strong>: <span class="review">Quick review Sets 5.0-5.1 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, May 22</strong>: <span class="speaking">Thai conversation practice - sets 1.0-5.1 (45 min)</span> + <span class="review">Comprehensive review Sets 5.0-5.1</span>
+        </div>
+        <div class="day">
+            <strong>Friday, May 23</strong>: <span class="new-content">Learn Set 5.2 (50 words)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 13 (May 24-30)</h3>
+        <div class="day weekend">
+            <strong>Saturday, May 24</strong>: <span class="new-content">Learn Set 5.3 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, May 25</strong>: <span class="new-content">Learn Set 5.4 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, May 26</strong>: <span class="review">Quick review Sets 5.2-5.4 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, May 27</strong>: <span class="new-content">Learn Set 5.5 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, May 28</strong>: <span class="review">Quick review Sets 5.3-5.5 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, May 29</strong>: <span class="listening">Listen to advanced Thai podcast (30 min)</span> + <span class="review">Comprehensive review Sets 5.2-5.5</span>
+        </div>
+        <div class="day">
+            <strong>Friday, May 30</strong>: <span class="review">Second review of Folder 3 (sets 3.0-3.9)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 14 (May 31-June 6)</h3>
+        <div class="day weekend">
+            <strong>Saturday, May 31</strong>: <span class="new-content">Learn Set 5.6 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, June 1</strong>: <span class="new-content">Learn Set 5.7 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Monday, June 2</strong>: <span class="review">Quick review Sets 5.6-5.7 (15 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, June 3</strong>: <span class="new-content">Learn Set 5.8 (50 words)</span>
+        </div>
+        <div class="day work-day">
+            <strong>Wednesday, June 4</strong>: <span class="review">Quick review Sets 5.6-5.8 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, June 5</strong>: <span class="speaking">Thai conversation practice - sets 1.0-5.8 (45 min)</span> + <span class="review">Comprehensive review Sets 5.6-5.8</span>
+        </div>
+        <div class="day">
+            <strong>Friday, June 6</strong>: <span class="review">First review of Folder 4 (sets 4.0-4.9)</span>
+        </div>
+    </div>
+
+    <h2>June 2025</h2>
+    
+    <div class="week">
+        <h3>Week 15 (June 7-13)</h3>
+        <div class="day weekend special-event">
+            <strong>Saturday, June 7</strong>: <span class="review">Complete Thai grammar review session (90 min)</span>
+        </div>
+        <div class="day weekend special-event">
+            <strong>Sunday, June 8</strong>: <span class="milestone">HIGH SCHOOL GRADUATION!</span> - <span class="new-content">Learn Set 5.9 (50 words)</span> - <span class="milestone">Folder 5 Complete!</span>
+        </div>
+        <div class="day">
+            <strong>Monday, June 9</strong>: <span class="review">Third review of Folder 2 (sets 2.0-2.9)</span> - <span class="milestone">Folder 2 Complete (3 reviews)!</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, June 10</strong>: <span class="new-content">Learn Set 6.0 (50 words)</span>
+        </div>
+        <div class="day">
+            <strong>Wednesday, June 11</strong>: <span class="new-content">Learn Set 6.1 (50 words)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, June 12</strong>: <span class="new-content">Learn Set 6.2 (50 words)</span>
+        </div>
+        <div class="day">
+            <strong>Friday, June 13</strong>: <span class="listening">Listen to advanced Thai podcast (45 min)</span> + <span class="review">Comprehensive review Sets 6.0-6.2</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 16 (June 14-20)</h3>
+        <div class="day weekend">
+            <strong>Saturday, June 14</strong>: <span class="new-content">Learn Set 6.3 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, June 15</strong>: <span class="new-content">Learn Set 6.4 (50 words)</span>
+        </div>
+        <div class="day">
+            <strong>Monday, June 16</strong>: <span class="review">Quick review Sets 6.3-6.4 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, June 17</strong>: <span class="new-content">Learn Set 6.5 (50 words)</span>
+        </div>
+        <div class="day">
+            <strong>Wednesday, June 18</strong>: <span class="review">Third review of Folder 3 (sets 3.0-3.9)</span> - <span class="milestone">Folder 3 Complete (3 reviews)!</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, June 19</strong>: <span class="speaking">Thai conversation practice - sets 1.0-6.5 (60 min)</span> + <span class="review">Comprehensive review Sets 6.3-6.5</span>
+        </div>
+        <div class="day">
+            <strong>Friday, June 20</strong>: <span class="review">Second review of Folder 4 (sets 4.0-4.9)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 17 (June 21-27)</h3>
+        <div class="day weekend">
+            <strong>Saturday, June 21</strong>: <span class="new-content">Learn Set 6.6 (50 words)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, June 22</strong>: <span class="new-content">Learn Set 6.7 (50 words)</span>
+        </div>
+        <div class="day">
+            <strong>Monday, June 23</strong>: <span class="review">Quick review Sets 6.6-6.7 (20 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, June 24</strong>: <span class="new-content">Learn Set 6.8 (50 words)</span>
+        </div>
+        <div class="day">
+            <strong>Wednesday, June 25</strong>: <span class="review">Quick review Sets 6.6-6.8 (25 minutes)</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, June 26</strong>: <span class="listening">Listen to advanced Thai podcast (45 min)</span> + <span class="review">Comprehensive review Sets 6.6-6.8</span>
+        </div>
+        <div class="day">
+            <strong>Friday, June 27</strong>: <span class="review">First review of Folder 5 (sets 5.0-5.9)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 18 (June 28-July 4)</h3>
+        <div class="day weekend">
+            <strong>Saturday, June 28</strong>: <span class="new-content">Learn Set 6.9 (50 words)</span> - <span class="milestone">All 6 Folders Complete with New Content!</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, June 29</strong>: <span class="review">Comprehensive review of Set 6.0-6.9</span>
+        </div>
+        <div class="day">
+            <strong>Monday, June 30</strong>: <span class="speaking">Advanced Thai conversation practice (90 min)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, July 1</strong>: <span class="review">Third review of Folder 4 (sets 4.0-4.9)</span> - <span class="milestone">Folder 4 Complete (3 reviews)!</span>
+        </div>
+        <div class="day">
+            <strong>Wednesday, July 2</strong>: <span class="listening">Watch Thai movie with Thai subtitles</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, July 3</strong>: <span class="review">Second review of Folder 5 (sets 5.0-5.9)</span>
+        </div>
+        <div class="day">
+            <strong>Friday, July 4</strong>: <span class="review">First review of Folder 6 (sets 6.0-6.9)</span>
+        </div>
+    </div>
+
+    <h2>July 2025</h2>
+    
+    <div class="week">
+        <h3>Week 19 (July 5-11)</h3>
+        <div class="day weekend">
+            <strong>Saturday, July 5</strong>: <span class="speaking">Advanced Thai conversation practice (90 min)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, July 6</strong>: <span class="listening">Watch Thai TV show (60 min)</span>
+        </div>
+        <div class="day">
+            <strong>Monday, July 7</strong>: <span class="review">Review common problem areas across all sets</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, July 8</strong>: <span class="review">Practice real-life scenarios in Thai (ordering food, asking directions)</span>
+        </div>
+        <div class="day">
+            <strong>Wednesday, July 9</strong>: <span class="review">Third review of Folder 5 (sets 5.0-5.9)</span> - <span class="milestone">Folder 5 Complete (3 reviews)!</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, July 10</strong>: <span class="speaking">Record yourself speaking Thai for 10 minutes</span>
+        </div>
+        <div class="day">
+            <strong>Friday, July 11</strong>: <span class="review">Second review of Folder 6 (sets 6.0-6.9)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 20 (July 12-18)</h3>
+        <div class="day weekend">
+            <strong>Saturday, July 12</strong>: <span class="review">Complete Thai grammar review session (90 min)</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, July 13</strong>: <span class="speaking">Advanced Thai conversation practice (90 min)</span>
+        </div>
+        <div class="day">
+            <strong>Monday, July 14</strong>: <span class="listening">Watch Thai documentary with Thai subtitles</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, July 15</strong>: <span class="review">Practice writing emails and messages in Thai</span>
+        </div>
+        <div class="day">
+            <strong>Wednesday, July 16</strong>: <span class="speaking">Mock interview in Thai</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, July 17</strong>: <span class="review">Review all Thai idioms and expressions</span>
+        </div>
+        <div class="day">
+            <strong>Friday, July 18</strong>: <span class="speaking">Have a 30-minute Thai conversation with language partner</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 21 (July 19-25)</h3>
+        <div class="day weekend">
+            <strong>Saturday, July 19</strong>: <span class="review">Third review of Folder 6 (sets 6.0-6.9)</span> - <span class="milestone">All Folders Complete (3 reviews each)!</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, July 20</strong>: <span class="speaking">Advanced Thai conversation practice (90 min)</span>
+        </div>
+        <div class="day">
+            <strong>Monday, July 21</strong>: <span class="review">Final review of challenging vocabulary across all sets</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, July 22</strong>: <span class="listening">Listen to Thai news broadcast</span>
+        </div>
+        <div class="day">
+            <strong>Wednesday, July 23</strong>: <span class="speaking">Practice explaining your background and interests in Thai</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, July 24</strong>: <span class="review">Practice understanding different Thai accents</span>
+        </div>
+        <div class="day">
+            <strong>Friday, July 25</strong>: <span class="speaking">Advanced Thai conversation practice (90 min)</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 22 (July 26-August 1)</h3>
+        <div class="day weekend">
+            <strong>Saturday, July 26</strong>: <span class="review">Complete travel vocabulary review</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, July 27</strong>: <span class="speaking">Practice explaining your studies and educational goals in Thai</span>
+        </div>
+        <div class="day">
+            <strong>Monday, July 28</strong>: <span class="review">Final review of all folders</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, July 29</strong>: <span class="speaking">Mock homestay conversation practice</span>
+        </div>
+        <div class="day">
+            <strong>Wednesday, July 30</strong>: <span class="review">Practice Thai cultural etiquette vocabulary</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, July 31</strong>: <span class="speaking">Record yourself giving a 5-minute speech in Thai</span>
+        </div>
+        <div class="day special-event">
+            <strong>Friday, August 1</strong>: <span class="milestone">POSSIBLE DEPARTURE TO THAILAND!</span> - <span class="review">Final vocabulary and phrase review</span>
+        </div>
+    </div>
+
+    <h2>August 2025</h2>
+    
+    <div class="week">
+        <h3>Week 23 (August 2-8)</h3>
+        <div class="day weekend">
+            <strong>Saturday, August 2</strong>: <span class="speaking">Practice airport and travel-related conversations</span>
+        </div>
+        <div class="day weekend">
+            <strong>Sunday, August 3</strong>: <span class="review">Review all vocabulary one final time</span>
+        </div>
+        <div class="day">
+            <strong>Monday, August 4</strong>: <span class="speaking">Advanced Thai conversation practice (90 min)</span>
+        </div>
+        <div class="day">
+            <strong>Tuesday, August 5</strong>: <span class="review">Create personalized vocabulary notes for travel</span>
+        </div>
+        <div class="day">
+            <strong>Wednesday, August 6</strong>: <span class="speaking">Practice explaining your language learning journey in Thai</span>
+        </div>
+        <div class="day">
+            <strong>Thursday, August 7</strong>: <span class="review">Final preparation and last-minute vocabulary</span>
+        </div>
+        <div class="day">
+            <strong>Friday, August 8</strong>: <span class="speaking">Final Thai conversation practice</span>
+        </div>
+    </div>
+    
+    <div class="week">
+        <h3>Week 24 (August 9-10)</h3>
+        <div class="day weekend">
+            <strong>Saturday, August 9</strong>: <span class="review">Last-minute review of most important vocabulary and phrases</span>
+        </div>
+        <div class="day weekend special-event">
+            <strong>Sunday, August 10</strong>: <span class="milestone">LATEST POSSIBLE DEPARTURE TO THAILAND! (23-hour flight)</span> - <span class="review">Practice during flight: Review all materials and listen to Thai podcasts</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Task data structure to hold all schedule information
+            const scheduleTasks = [];
+            let completedDays = {};
+            const totalDays = 164; // From March 1 to August 10
+            let wordProgress = {};
+            
+            // Load saved progress from localStorage
+            function loadProgress() {
+                try {
+                    const savedCompletedDays = localStorage.getItem('thaiScheduleCompletedDays');
+                    if (savedCompletedDays) {
+                        completedDays = JSON.parse(savedCompletedDays);
+                    }
+                    
+                    const savedWordProgress = localStorage.getItem('thaiScheduleWordProgress');
+                    if (savedWordProgress) {
+                        wordProgress = JSON.parse(savedWordProgress);
+                    }
+                    
+                    // Apply completed styles to days
+                    Object.keys(completedDays).forEach(dayId => {
+                        if (completedDays[dayId]) {
+                            const dayElement = document.getElementById(dayId);
+                            if (dayElement) {
+                                dayElement.classList.add('day-completed');
+                            }
+                        }
+                    });
+                    
+                    updateProgressDisplay();
+                } catch (e) {
+                    console.error('Error loading progress:', e);
+                    // Reset if there's an error
+                    completedDays = {};
+                    wordProgress = {};
+                }
+            }
+            
+            // Save progress to localStorage
+            function saveProgress() {
+                localStorage.setItem('thaiScheduleCompletedDays', JSON.stringify(completedDays));
+                localStorage.setItem('thaiScheduleWordProgress', JSON.stringify(wordProgress));
+            }
+            
+            // Update progress display
+            function updateProgressDisplay() {
+                const completedCount = Object.values(completedDays).filter(val => val).length;
+                const progressPercentage = Math.min(100, Math.round((completedCount / totalDays) * 100));
+                
+                // Update progress bar
+                const progressBar = document.getElementById('progressBar');
+                progressBar.style.width = progressPercentage + '%';
+                progressBar.innerText = progressPercentage + '%';
+                
+                // Update stats
+                document.getElementById('daysCompleted').innerText = completedCount;
+                
+                // Calculate words learned based on completed days that have new content
+                let wordsLearned = 0;
+                
+                // Loop through all days with class day
+                document.querySelectorAll('.day').forEach(day => {
+                    const dayId = day.id;
+                    if (completedDays[dayId]) {
+                        // Check if day contains new vocabulary (has class new-content)
+                        const newContentElement = day.querySelector('.new-content');
+                        if (newContentElement) {
+                            const text = newContentElement.innerText;
+                            // Look for patterns like "Learn Set X.Y (50 words)"
+                            if (text.includes('Learn Set') && text.includes('words')) {
+                                // Extract number of sets
+                                const sets = (text.match(/Learn Set/g) || []).length;
+                                // Most sets are 50 words
+                                wordsLearned += sets * 50;
+                            }
+                        }
+                    }
+                });
+                
+                document.getElementById('wordsLearned').innerText = wordsLearned;
+            }
+            
+            // Extract date and task information from all days
+            function extractScheduleData() {
+                const allDays = document.querySelectorAll('.day');
+                
+                allDays.forEach((day, index) => {
+                    // Create unique ID for each day
+                    day.id = 'day-' + index;
+                    
+                    // Get date string from the strong element
+                    const dateText = day.querySelector('strong').innerText;
+                    
+                    // Extract day, month, year parts
+                    const regex = /(\w+), (\w+) (\d+)/;
+                    const match = dateText.match(regex);
+                    
+                    if (match) {
+                        const dayOfWeek = match[1];
+                        const month = match[2];
+                        const dayOfMonth = match[3];
+                        
+                        // Convert to a date object (2025)
+                        const months = {
+                            'January': 0, 'February': 1, 'March': 2, 'April': 3,
+                            'May': 4, 'June': 5, 'July': 6, 'August': 7,
+                            'September': 8, 'October': 9, 'November': 10, 'December': 11
+                        };
+                        
+                        const date = new Date(2025, months[month], parseInt(dayOfMonth));
+                        
+                        // Extract tasks from the day element
+                        let tasks = '';
+                        
+                        // Get all spans in the day element
+                        const spans = day.querySelectorAll('span');
+                        spans.forEach(span => {
+                            tasks += span.innerText + ' ';
+                        });
+                        
+                        // Add to schedule tasks array
+                        scheduleTasks.push({
+                            id: day.id,
+                            date: date,
+                            dateString: dateText,
+                            dayOfWeek: dayOfWeek,
+                            tasks: tasks.trim()
+                        });
+                    }
+                    
+                    // Add click event listener
+                    day.addEventListener('click', function() {
+                        const dayId = this.id;
+                        
+                        // Toggle completion state
+                        completedDays[dayId] = !completedDays[dayId];
+                        
+                        // Toggle class
+                        this.classList.toggle('day-completed');
+                        
+                        // Save progress
+                        saveProgress();
+                        
+                        // Update progress display
+                        updateProgressDisplay();
+                    });
+                });
+            }
+            
+            // Create and download ICS file
+            function downloadICS() {
+                let icsContent = 
+                    "BEGIN:VCALENDAR\n" +
+                    "VERSION:2.0\n" +
+                    "PRODID:-//Thai Learning Schedule//EN\n" +
+                    "CALSCALE:GREGORIAN\n";
+                
+                scheduleTasks.forEach(task => {
+                    const date = task.date;
+                    
+                    // Format date for ICS (YYYYMMDDTHHmmssZ)
+                    const year = date.getFullYear();
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const day = date.getDate().toString().padStart(2, '0');
+                    
+                    const dateString = `${year}${month}${day}`;
+                    
+                    // Add event to ICS file
+                    icsContent += 
+                        "BEGIN:VEVENT\n" +
+                        `SUMMARY:Thai Study: ${task.dateString}\n` +
+                        `DESCRIPTION:${task.tasks}\n` +
+                        `DTSTART;VALUE=DATE:${dateString}\n` +
+                        `DTEND;VALUE=DATE:${dateString}\n` +
+                        "END:VEVENT\n";
+                });
+                
+                icsContent += "END:VCALENDAR";
+                
+                // Create download link
+                const blob = new Blob([icsContent], { type: 'text/calendar' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'thai_study_schedule.ics';
+                a.click();
+                
+                // Clean up
+                URL.revokeObjectURL(url);
+            }
+            
+            // Create and download CSV file
+            function downloadCSV() {
+                let csvContent = "Date,Day of Week,Tasks\n";
+                
+                scheduleTasks.forEach(task => {
+                    const date = task.date;
+                    const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+                    
+                    // Replace any commas in tasks with semicolons to avoid CSV issues
+                    const sanitizedTasks = task.tasks.replace(/,/g, ';');
+                    
+                    csvContent += `${dateString},${task.dayOfWeek},"${sanitizedTasks}"\n`;
+                });
+                
+                // Create download link
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'thai_study_schedule.csv';
+                a.click();
+                
+                // Clean up
+                URL.revokeObjectURL(url);
+            }
+            
+            // Initialize the page
+            extractScheduleData();
+            loadProgress();
+            
+            // Set up download buttons
+            document.getElementById('downloadIcsBtn').addEventListener('click', downloadICS);
+            document.getElementById('downloadCsvBtn').addEventListener('click', downloadCSV);
+            
+            // Set up reset progress button
+            document.getElementById('resetProgressBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                    completedDays = {};
+                    wordProgress = {};
+                    
+                    // Remove completed class from all days
+                    document.querySelectorAll('.day').forEach(day => {
+                        day.classList.remove('day-completed');
+                    });
+                    
+                    // Save empty progress
+                    saveProgress();
+                    
+                    // Update progress display
+                    updateProgressDisplay();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
